@@ -20,20 +20,54 @@ class AddressController extends Controller
         } else {
             return response(['status' => 'info', 'message' => 'Nenhum endereço cadastrado!'], 200);
         }
+    }
 
+    /**
+     * Método secundário para buscar o endereço pelo CEP
+     */
+    function viaCEP($cep)
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "viacep.com.br/ws/$cep/json/",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
     }
 
     /**
      * Método para retornar os endereços com o CEP informado
      */
+    public function findByCep($cep)
+    {
 
-    public function findByCep($cep) {
-        $address = DB::select("SELECT * FROM address WHERE cep = $cep");
+        if (strlen($cep) === 8) {
 
-        if (sizeof($address) != 0) {
-            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+            $address = DB::select("SELECT * FROM addresses WHERE cep = $cep");
+
+            if (sizeof($address) != 0) {
+                return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+            } else {
+
+                // Caso o endereço não esteja cadastrado localmente, procura no webservice da viaCEP
+                $address = json_decode($this->viaCEP($cep));
+
+                return response(['status' => 'success', 'data' => $address], 200);
+            }
         } else {
-            return response(['status' => 'info', 'message' => 'Nenhum endereço encontrado para esse CEP!'], 200);
+            return response(["error" => "error", "message" => "CEP inválido! Por favor tente novamente."], 500);
         }
     }
 
@@ -41,7 +75,8 @@ class AddressController extends Controller
      * Método para retornar os endereços com o CEP informado
      */
 
-    public function find(Request $request) {
+    public function find(Request $request)
+    {
         $addressName = $request['endereco'];
 
         $address = DB::select("SELECT * FROM addresses WHERE endereco like '%$addressName%'");
