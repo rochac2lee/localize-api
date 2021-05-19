@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {
-    public function index()
-    {
 
-        // Retorna todos os endereços cadastrados
+    /**
+     * Lista todos os endereços da base de dados local
+     */
+    public function index() {
+
         $address = Address::all();
 
         if (sizeof($address) != 0) {
@@ -23,10 +25,22 @@ class AddressController extends Controller
     }
 
     /**
+     * Lista um endereço baseado no id
+     */
+    public function show($id) {
+        $address = Address::find($id);
+
+        if (sizeOf(array($address)) != 0) {
+            return response(['status' => 'success', 'data' => $address], 200);
+        } else {
+            return response(['status' => 'info', 'message' => 'Nenhum endereço cadastrado!'], 200);
+        }
+    }
+
+    /**
      * Método secundário para buscar o endereço pelo CEP
      */
-    function viaCEP($cep)
-    {
+    function viaCEP($cep) {
 
         $curl = curl_init();
 
@@ -50,8 +64,7 @@ class AddressController extends Controller
     /**
      * Método para retornar os endereços com o CEP informado
      */
-    public function findByCep($cep)
-    {
+    public function findByCep($cep) {
 
         if (strlen($cep) === 8) {
 
@@ -75,8 +88,7 @@ class AddressController extends Controller
      * Método para retornar os endereços com o CEP informado
      */
 
-    public function find(Request $request)
-    {
+    public function find(Request $request) {
         $addressName = $request['endereco'];
 
         $address = DB::select("SELECT * FROM addresses WHERE endereco like '%$addressName%'");
@@ -91,8 +103,7 @@ class AddressController extends Controller
     /**
      * Método para cadastro de endereço
      */
-    public function new(Request $request)
-    {
+    public function new(Request $request) {
 
         // Valida se é possível cadastrar o endereço
         try {
@@ -115,8 +126,7 @@ class AddressController extends Controller
     /**
      * Método para atualização de endereços
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
 
         $request = $request->all();
         if (!$address = Address::find($id)) {
@@ -138,8 +148,7 @@ class AddressController extends Controller
     /**
      * Método para exclusão de endereço
      */
-    public function remove(Address $address, $id)
-    {
+    public function remove(Address $address, $id) {
 
         if (!$address = Address::find($id)) {
 
