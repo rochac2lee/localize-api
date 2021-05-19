@@ -1,19 +1,15 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+/**
+ * Endpoints da API
+ */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
+    Route::get('address', "AddressController@index"); // Endpoint para listar todos os endereços cadastrados
+    Route::post('address', "AddressController@new"); // Endpoint para cadastrar um novo endereço
+    Route::put('address/{id}', "AddressController@update"); // Endpoint para atualizar um endereço existente
+    Route::delete('address/{id}', "AddressController@remove"); // Endpoint para excluir um endereço existente
 });

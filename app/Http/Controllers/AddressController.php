@@ -12,14 +12,19 @@ class AddressController extends Controller
     public function index()
     {
 
+        // Retorna todos os endereços cadastrados
         $address = Address::all();
 
         return response(['total' => sizeof($address), 'data' => $address], 200);
     }
 
+    /**
+     * Método para cadastro de endereço
+     */
     public function new(Request $request)
     {
 
+        // Valida se é possível cadastrar o endereço
         try {
             $address = Address::create([
                 'cep' => $request->cep,
@@ -49,6 +54,7 @@ class AddressController extends Controller
             return response(["status" => "error", "message" => "Endereço não encontrado!"], 500);
         } else {
 
+            // Valida se é possível atualizar o endereço
             try {
                 $address->update($request);
 
@@ -59,6 +65,9 @@ class AddressController extends Controller
         }
     }
 
+    /**
+     * Método para exclusão de endereço
+     */
     public function remove(Address $address, $id)
     {
 
