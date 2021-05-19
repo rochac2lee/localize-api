@@ -16,7 +16,7 @@ class AddressController extends Controller
         $address = Address::all();
 
         if (sizeof($address) != 0) {
-            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+            return response(['status' => 'success', 'data' => $address], 200);
         } else {
             return response(['status' => 'info', 'message' => 'Nenhum endereço cadastrado!'], 200);
         }
@@ -58,7 +58,7 @@ class AddressController extends Controller
             $address = DB::select("SELECT * FROM addresses WHERE cep = $cep");
 
             if (sizeof($address) != 0) {
-                return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+                return response(['status' => 'success', 'data' => $address], 200);
             } else {
 
                 // Caso o endereço não esteja cadastrado localmente, procura no webservice da viaCEP
@@ -82,7 +82,7 @@ class AddressController extends Controller
         $address = DB::select("SELECT * FROM addresses WHERE endereco like '%$addressName%'");
 
         if (sizeof($address) != 0) {
-            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+            return response(['status' => 'success', 'data' => $address], 200);
         } else {
             return response(['status' => 'info', 'message' => 'Nenhum endereço encontrado!'], 200);
         }
