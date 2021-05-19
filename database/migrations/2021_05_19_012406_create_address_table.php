@@ -15,7 +15,7 @@ class CreateAddressTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->integer('cep'); //Código do
+            $table->integer('cep'); //Código Postal
             $table->string('uf'); // Sigla do Estado
             $table->string('cidade'); // Nome da cidade
             $table->string('bairro'); // Comunidade ou Região de uma cidade
