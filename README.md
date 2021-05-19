@@ -34,7 +34,7 @@ composer install
 ### Conexão com banco de dados
 
 - Crie um banco de dados para o sistema
-- Copie o conteúde de .env.example para .env e altere as informações de conexão da sua base de dados
+- Copie o conteúdo de .env.example para .env e altere as informações de conexão da sua base de dados
 
 ### Gerar chave de criptografia
 
