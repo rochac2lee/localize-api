@@ -12,4 +12,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('address', "AddressController@new"); // Endpoint para cadastrar um novo endereço
     Route::put('address/{id}', "AddressController@update"); // Endpoint para atualizar um endereço existente
     Route::delete('address/{id}', "AddressController@remove"); // Endpoint para excluir um endereço existente
+
+    Route::get('address/cep/{cep}', "AddressController@findByCep"); // Endpoint retorna os endereços encontrados baseado na busca por CEP
+    Route::post('address/find', "AddressController@find"); // Endpoint retorna os endereços baseado no logradouro
 });

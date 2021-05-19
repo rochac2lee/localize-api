@@ -15,7 +15,42 @@ class AddressController extends Controller
         // Retorna todos os endereços cadastrados
         $address = Address::all();
 
-        return response(['total' => sizeof($address), 'data' => $address], 200);
+        if (sizeof($address) != 0) {
+            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+        } else {
+            return response(['status' => 'info', 'message' => 'Nenhum endereço cadastrado!'], 200);
+        }
+
+    }
+
+    /**
+     * Método para retornar os endereços com o CEP informado
+     */
+
+    public function findByCep($cep) {
+        $address = DB::select("SELECT * FROM address WHERE cep = $cep");
+
+        if (sizeof($address) != 0) {
+            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+        } else {
+            return response(['status' => 'info', 'message' => 'Nenhum endereço encontrado para esse CEP!'], 200);
+        }
+    }
+
+    /**
+     * Método para retornar os endereços com o CEP informado
+     */
+
+    public function find(Request $request) {
+        $addressName = $request['endereco'];
+
+        $address = DB::select("SELECT * FROM addresses WHERE endereco like '%$addressName%'");
+
+        if (sizeof($address) != 0) {
+            return response(['status' => 'success', 'total' => sizeof($address), 'data' => $address], 200);
+        } else {
+            return response(['status' => 'info', 'message' => 'Nenhum endereço encontrado!'], 200);
+        }
     }
 
     /**
