@@ -10,15 +10,20 @@ use Illuminate\Support\Facades\DB;
 class AddressController extends Controller
 {
 
+    private $address;
+
+    public function __construct(Address $address)
+    {
+        $this->address = $address;
+    }
+
     /**
      * Lista todos os endereços da base de dados local
      */
     public function index() {
 
-        $address = Address::all();
-
-        if (sizeof($address) != 0) {
-            return response(['status' => 'success', 'data' => $address], 200);
+        if (sizeof($this->address->all()) != 0) {
+            return response(['status' => 'success', 'data' => $this->address->all()], 200);
         } else {
             return response(['status' => 'info', 'message' => 'Nenhum endereço cadastrado!'], 200);
         }

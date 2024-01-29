@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request as Request;
 use Illuminate\Support\Facades\Route;
 
 /**
